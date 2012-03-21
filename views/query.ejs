@@ -1,0 +1,12 @@
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script>
+		var socket = io.connect("localhost");
+ 		socket.on("update", function(data) {
+			$("#title").html("Query: " + data.key);
+			$("#tweets").append("<div class=tweet style='border-top: 1px solid black; margin-top: 10px; border-top: 10px;'>" + data.text + "</div>");
+		});
+	</script>
+
+<div id='title'></div>
+<div id='tweets'></div>
