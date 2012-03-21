@@ -11,7 +11,8 @@ exports.query = function(req, res) {
 	var tracker = require('../tracker.js');
 	tracker.track(req.params.query);
 
-	var response = '<script src="socket.io/socket.io.js"></script>';
+	var response = '<script src="/socket.io/socket.io.js"></script>';
+	response += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>';
 	response += '<script>var socket = io.connect("localhost");';
     response += 'socket.on("update", function(data) {';
     response += ' $("#cool").append(data.text);';
