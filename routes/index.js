@@ -15,11 +15,11 @@ exports.query = function(req, res) {
 	response += '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>';
 	response += '<script>var socket = io.connect("localhost");';
     response += 'socket.on("update", function(data) {';
-    response += ' $("#cool").append(data.text);';
+    response += ' $("#title").html("Query: " + data.key);';
+    response += ' $("#tweets").append("<div class=tweet style=\'border-top: 1px solid black; margin-top: 10px; border-top: 10px;\'>" + data.text + "</div>");';
     response += '});</script>';
-    response += '<b>Hello from my http server!!</b> <br/>';
-    response += '<p>Total awesome: <span id="awesome"></span></p>';
-    response += '<p>Total cool: <span id="cool"></span></p>';
+    response += '<div id=title></div>';
+    response += '<div id=tweets></div>';
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.end(response);
 
