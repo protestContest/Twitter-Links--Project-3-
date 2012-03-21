@@ -22,7 +22,6 @@ exports.track = function (query) {
 		{ track: [query] },
 		function(stream) {
 			stream.on('data', function(tweet) {
-				console.log('Adding to set ' + query);
 				client.incr('tweets.count');
 				client.sadd('tweets.' + query, tweet, function(err, res) {
 					if (err) {

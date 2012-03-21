@@ -11,7 +11,18 @@ exports.query = function(req, res) {
 	var tracker = require('../tracker.js');
 	tracker.track(req.params.query);
 
-	res.send(req.params.query);
+	var response = '<script src="socket.io/socket.io.js"></script>';
+	response += '<script>var socket = io.connect("localhost");';
+    response += 'socket.on("update", function(data) {';
+    response += ' $("#cool").append(data.text);';
+    response += '});</script>';
+    response += '<b>Hello from my http server!!</b> <br/>';
+    response += '<p>Total awesome: <span id="awesome"></span></p>';
+    response += '<p>Total cool: <span id="cool"></span></p>';
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(response);
+
+	// res.send(req.params.query);
 
 	// var redis = require('redis');
 	// var twitter = require('ntwitter')
