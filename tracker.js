@@ -23,15 +23,16 @@ exports.track = function (query) {
 		function(stream) {
 			stream.on('data', function(tweet) {
 				client.incr('tweets.count');
-				client.sadd('tweets.' + query, tweet, function(err, res) {
-					if (err) {
-						console.log(err);
-						return;
-					}
+				// client.sadd('tweets.' + query, tweet, function(err, res) {
+				// 	if (err) {
+				// 		console.log(err);
+				// 		return;
+				// 	}
 
-					var message = {key:query, text:tweet.text};
+					var message = {key:query, text:tweet};
+					console.log(tweet);
 					client.publish('update', JSON.stringify(message));
-				}); //client.sadd
+				// }); //client.sadd
 
 			}); //stream.on
 		} //function(stream)

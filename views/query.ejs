@@ -3,10 +3,10 @@
 	<script>
 		var socket = io.connect("localhost");
  		socket.on("update", function(data) {
- 			// console.log(data);
-			$("#tweets").append("<div class=tweet style='border-top: 1px solid black; margin-top: 10px; border-top: 10px;'>" + data.text + "</div>");
+ 			console.log(data);
+			$("#tweets").append("<div class=tweet style='border-top: 1px solid black; margin-top: 10px; border-top: 10px;'>" + data.text.text + "</div>");
 		});
 	</script>
 
-<div id='title'>Query: <%- title %></div>
+<h1 id='title'>Query: <%- title %></h1>
 <div id='tweets'></div>

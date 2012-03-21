@@ -48,7 +48,7 @@ sio.sockets.on('connection', function (socket) {
 
 	listener.subscribe('update');
 	listener.on('message', function(channel, msg) {
-		console.log('io: ' + msg);
+		// console.log('io: ' + msg);
 		var message = JSON.parse(msg);
 		socket.emit('update', { key: message.key, text: message.text });
 	});
