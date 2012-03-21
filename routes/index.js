@@ -8,9 +8,10 @@ exports.index = function(req, res){
 };
 
 exports.query = function(req, res) {
-	track
+	var tracker = require('../tracker.js');
+	tracker.track(req.params.query);
 
-
+	res.send(req.params.query);
 
 	// var redis = require('redis');
 	// var twitter = require('ntwitter')

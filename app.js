@@ -8,8 +8,7 @@ var express = require('express')
   , io = require('socket.io')
   , redis = require('redis')
   , twitter = require('ntwitter')
-  , credentials = require('./credentials.js')
-  , tracker = require('./tracker.js');
+  , credentials = require('./credentials.js');
 
 
 

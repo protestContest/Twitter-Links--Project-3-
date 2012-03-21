@@ -6,10 +6,10 @@ exports.track = function (query) {
 
 	var client = redis.createClient();
 	var t = new twitter({
-		consumer_key: credentials.consumer_key,
-		consumer_secret: credentials.consumer_secret,
-		access_token_key: credentials.access_token_key,
-		access_token_secret: credentials.access_token_secret
+		consumer_key: cred.consumer_key,
+		consumer_secret: cred.consumer_secret,
+		access_token_key: cred.access_token_key,
+		access_token_secret: cred.access_token_secret
 	});
 
 	t.verifyCredentials(function (error, data) {
@@ -22,7 +22,9 @@ exports.track = function (query) {
 		{ track: [query] },
 		function(stream) {
 			stream.on('data', function(tweet) {
-				client.sadd(query, tweet, function(err, res) {
+				console.log('Adding to set ' + query);
+				client.incr('tweets.count');
+				client.sadd('tweets.' + query, tweet, function(err, res) {
 					if (err) {
 						console.log(err);
 						return;
@@ -30,11 +32,11 @@ exports.track = function (query) {
 
 					var message = {key:query, text:tweet.text};
 					client.publish('update', JSON.stringify(message));
-				});
+				}); //client.sadd
 
-			});
-		}
-	);
+			}); //stream.on
+		} //function(stream)
+	); //stream
 
 }
 
