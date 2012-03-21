@@ -4,15 +4,21 @@
 		var socket = io.connect("localhost");
 		var numTweets = 0;
  		socket.on("update", function(data) {
- 			if (numTweets > 10) {
+ 			if (numTweets == 0) {
+ 				$('#wait-msg').fadeOut();
+ 			}
+ 			else if (numTweets > 10) {
  				socket.disconnect();
  			}
  			else {
- 				numTweets++;
  				$("<div class=tweet style='border-bottom: 1px solid black; margin-bottom: 10px; padding-bottom: 10px;'>" + data.text.text + "</div>").prependTo($("#tweets")).hide().slideDown();
  			}
+
+			numTweets++;
 		});
 	</script>
 
 <h1 id='title'>Query: <%- title %></h1>
+<b id='count'></b>
 <div id='tweets'></div>
+<div id='wait-msg'>Waiting for Tweets...</div>

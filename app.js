@@ -8,7 +8,8 @@ var express = require('express')
 	, io = require('socket.io')
 	, redis = require('redis')
 	, twitter = require('ntwitter')
-	, credentials = require('./credentials.js');
+	, credentials = require('./credentials.js')
+	, tracker = require('./tracker.js');
 
 
 
@@ -36,6 +37,7 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
+// app.post('/query/', routes.get_query);
 app.get('/query/:query', routes.query);
 
 app.listen(3000);
@@ -54,6 +56,9 @@ sio.sockets.on('connection', function (socket) {
 	});
 	
 	console.log('A socket connected!');
+});
+sio.sockets.on('disconnect', function () {
+	
 });
 
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

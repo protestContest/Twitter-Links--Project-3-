@@ -21,19 +21,11 @@ exports.track = function (query) {
 		'statuses/filter',
 		{ track: [query] },
 		function(stream) {
+			if (query==='') return;
 			stream.on('data', function(tweet) {
 				client.incr('tweets.count');
-				// client.sadd('tweets.' + query, tweet, function(err, res) {
-				// 	if (err) {
-				// 		console.log(err);
-				// 		return;
-				// 	}
-
-					var message = {key:query, text:tweet};
-					console.log(tweet);
-					client.publish('update', JSON.stringify(message));
-				// }); //client.sadd
-
+				var message = {key:query, text:tweet};
+				client.publish('update', JSON.stringify(message));
 			}); //stream.on
 		} //function(stream)
 	); //stream
