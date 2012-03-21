@@ -2,9 +2,15 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script>
 		var socket = io.connect("localhost");
+		var numTweets = 0;
  		socket.on("update", function(data) {
- 			console.log(data);
-			$("#tweets").append("<div class=tweet style='border-top: 1px solid black; margin-top: 10px; border-top: 10px;'>" + data.text.text + "</div>");
+ 			if (numTweets > 10) {
+ 				socket.disconnect();
+ 			}
+ 			else {
+ 				numTweets++;
+ 				$("<div class=tweet style='border-bottom: 1px solid black; margin-bottom: 10px; padding-bottom: 10px;'>" + data.text.text + "</div>").prependTo($("#tweets")).hide().slideDown();
+ 			}
 		});
 	</script>
 
