@@ -11,8 +11,6 @@ var express = require('express')
 	, credentials = require('./credentials.js')
 	, tracker = require('./tracker.js');
 
-
-
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -57,8 +55,9 @@ sio.sockets.on('connection', function (socket) {
 	
 	console.log('A socket connected!');
 });
-sio.sockets.on('disconnect', function () {
-	
+
+sio.configure('development', function() {
+	sio.set('log level', 1);
 });
 
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
