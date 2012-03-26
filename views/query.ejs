@@ -13,7 +13,9 @@
 	 				$('#wait-msg').fadeOut();
 	 			}
 	 			else {
-	 				$("<div class=tweet style='border-bottom: 1px solid black; margin-bottom: 10px; padding-bottom: 10px;'>" + bufferedTweet.text.text + "</div>").prependTo($("#tweets")).hide().slideDown(500);
+	 				var hue = ((bufferedTweet.text.sentiment + 10) * 127) / 20;
+	 				console.log(hue);
+	 				$("<div class=tweet style='border-left-color: hsl(" + hue + ",70%,50%);'>" + bufferedTweet.text.text + "<b>" + bufferedTweet.text.sentiment + "</b></div>").prependTo($("#tweets")).hide().slideDown(500);
 	 			}
 	 			if (numTweets >= 100) {
 	 				$('#tweets').children().last().remove();

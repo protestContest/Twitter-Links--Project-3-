@@ -35,18 +35,21 @@ exports.track = function (query) {
 		function(stream) {
 			if (query==='') return;
 			stream.on('data', function(tweet) {
-				var sentiment = 0;
-				tweet.text.split(' ').forEach(function(word) {
-					if (afinn.hasOwnProperty(word)) {
-						console.log(afinn.get(word));
-						// sentiment += afinn.get(word);
-					}
-				});
-				// console.log(sentiment);
+				// console.log(tweet.user.lang);
+				if (tweet.user.lang=='en') {
+					var sentiment = 0;
+					tweet.text.split(' ').forEach(function(word) {
+						if (afinn.hasOwnProperty(word)) {
+							// console.log(afinn[word]);
+							sentiment += afinn[word];
+						}
+					});
+					tweet.sentiment = sentiment;
 
-				client.incr('tweets.count');
-				var message = {key:query, text:tweet};
-				client.publish('update', JSON.stringify(message));
+					client.incr('tweets.count');
+					var message = {key:query, text:tweet};
+					client.publish('update', JSON.stringify(message));
+				}
 			}); //stream.on
 		} //function(stream)
 	); //stream
