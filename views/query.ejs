@@ -2,23 +2,24 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script>
-		var recentTweet, bufferedTweet = {};
+		var curTweet, bufferedTweets = [];
 		var socket = io.connect("localhost");
 		var numTweets = 0, totalSentiment = 0;
 
 		var clk = window.setInterval(function() {
-			if (recentTweet !== bufferedTweet) {
-				recentTweet = bufferedTweet;
+			if (bufferedTweets.length > 0) {
+				curTweet = bufferedTweets.shift();
+
 				$('#count').html(numTweets);
 	 			if (numTweets == 0) {
 	 				$('#wait-msg').fadeOut();
 	 			}
 	 			else {
-	 				totalSentiment += bufferedTweet.text.sentiment;
+	 				totalSentiment += curTweet.text.sentiment;
 	 				$('#sentiment-total').html(totalSentiment);
 
-	 				var hue = ((bufferedTweet.text.sentiment + 10) * 120) / 20;
-	 				$("<div class=tweet style='border-left-color: hsl(" + hue + ",70%,50%);'>" + bufferedTweet.text.text + "</div>").prependTo($("#tweets")).hide().slideDown(500);
+	 				var hue = ((curTweet.text.sentiment + 10) * 120) / 20;
+	 				$("<div class=tweet style='border-left-color: hsl(" + hue + ",70%,50%);'>" + curTweet.text.text + "</div>").prependTo($("#tweets")).hide().slideDown(500);
 	 			}
 	 			if (numTweets >= 100) {
 	 				$('#tweets').children().last().remove();
@@ -41,7 +42,9 @@
 		}, 800);
 
  		socket.on("update", function(data) {
- 			bufferedTweet = data;
+ 			if (bufferedTweets.length < 20) {
+ 				bufferedTweets.push(data);
+ 			}
 		});
 	</script>
 
