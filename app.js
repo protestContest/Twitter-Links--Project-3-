@@ -55,6 +55,9 @@ sio.sockets.on('connection', function (socket) {
 	
 	console.log('A socket connected!');
 });
+sio.sockets.on('disconnection', function (socket) {
+	console.log('Socket disconnected');
+});
 
 sio.configure('development', function() {
 	sio.set('log level', 1);

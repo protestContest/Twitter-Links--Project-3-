@@ -1,13 +1,24 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type='text/javascript'>
-	$(document).ready(function() {
-		$('button').click(function() {
-			window.location.href += 'query/' + $('input').val();
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type='text/javascript'>
+		$(document).ready(function() {
+			$('form').submit(function() {
+				console.log('hey.');
+				window.location.href += 'query/' + $('input').val();
+				return false;
+			});
 		});
-	});
-</script>
+	</script>
 
-
+<h1 id='title'>Ask Twitter</h1>	
+<p id='intro'>Ask Twitter can analyze incoming tweets about a subject and determine whether people generally have a positive or negative reaction to it.  Enter a query below and see what Twitter thinks of it!</p>
+<div id='search-container'>
 	Search Twitter:
-	<input type='text' />
-	<button>Search</button>
+	<form id='search'>
+		<input type='text' />
+		<input type='submit' value='Search' />
+	</form>
+</div>
+
+<footer>
+	&copy; 2012 <a href='http://www.zackmichener.com/'>Zack Michener</a>
+</footer>

@@ -35,18 +35,18 @@ exports.track = function (query) {
 		function(stream) {
 			if (query==='') return;
 			stream.on('data', function(tweet) {
-				// console.log(tweet.user.lang);
 				if (tweet.user.lang=='en') {
 					var sentiment = 0;
 					tweet.text.split(' ').forEach(function(word) {
-						if (afinn.hasOwnProperty(word)) {
-							// console.log(afinn[word]);
-							sentiment += afinn[word];
+						if (word.trim() != query) {
+							if (afinn.hasOwnProperty(word.trim())) {
+								sentiment += afinn[word];
+							}
 						}
 					});
 					tweet.sentiment = sentiment;
 
-					client.incr('tweets.count');
+					client.incr(query + '.count');
 					var message = {key:query, text:tweet};
 					client.publish('update', JSON.stringify(message));
 				}

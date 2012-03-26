@@ -1,9 +1,10 @@
+	<link rel='stylesheet' href='/stylesheets/query.css' />
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script>
 		var recentTweet, bufferedTweet = {};
 		var socket = io.connect("localhost");
-		var numTweets = 0;
+		var numTweets = 0, totalSentiment = 0;
 
 		var clk = window.setInterval(function() {
 			if (recentTweet !== bufferedTweet) {
@@ -13,25 +14,42 @@
 	 				$('#wait-msg').fadeOut();
 	 			}
 	 			else {
-	 				var hue = ((bufferedTweet.text.sentiment + 10) * 127) / 20;
-	 				console.log(hue);
-	 				$("<div class=tweet style='border-left-color: hsl(" + hue + ",70%,50%);'>" + bufferedTweet.text.text + "<b>" + bufferedTweet.text.sentiment + "</b></div>").prependTo($("#tweets")).hide().slideDown(500);
+	 				totalSentiment += bufferedTweet.text.sentiment;
+	 				$('#sentiment-total').html(totalSentiment);
+
+	 				var hue = ((bufferedTweet.text.sentiment + 10) * 120) / 20;
+	 				$("<div class=tweet style='border-left-color: hsl(" + hue + ",70%,50%);'>" + bufferedTweet.text.text + "</div>").prependTo($("#tweets")).hide().slideDown(500);
 	 			}
 	 			if (numTweets >= 100) {
 	 				$('#tweets').children().last().remove();
 	 			}
 
+	 			if (numTweets >= 5) {
+		 			if (totalSentiment > 0.5*numTweets) {
+		 				$('#sentiment').html('Twitter likes <%- title %>.');
+		 			}
+		 			else if (-totalSentiment > 0.5*numTweets) {
+		 				$('#sentiment').html('Twitter does not like <%- title %>.');
+		 			}
+		 			else {
+		 				$('#sentiment').html('Twitter is divided about <%- title %>.');
+		 			}
+		 		}
+
 				numTweets++;
 			}
-		}, 500);
+		}, 800);
 
  		socket.on("update", function(data) {
  			bufferedTweet = data;
 		});
 	</script>
 
-<h1 id='title'>Query: <%- title %> (<span id='count'></span>)</h1>
+<a href='/'>&larr; Back</a>
+<h1 id='title'>Query: <%- title %></h1>
+<p id='sentiment'>Analyzing Twitter's feelings...</p>
 <div id='tweets-container'>
-	<div id='tweets'></div>
-</div>	
-<div id='wait-msg'>Waiting for Tweets...</div>
+	<div id='tweets'>
+		<div id='wait-msg'>Waiting for Tweets...</div>
+	</div>
+</div>
