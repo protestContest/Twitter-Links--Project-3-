@@ -1,24 +1,35 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script>
+		var recentTweet, bufferedTweet = {};
 		var socket = io.connect("localhost");
 		var numTweets = 0;
- 		socket.on("update", function(data) {
- 			if (numTweets == 0) {
- 				$('#wait-msg').fadeOut();
- 			}
- 			else if (numTweets > 10) {
- 				socket.disconnect();
- 			}
- 			else {
- 				$("<div class=tweet style='border-bottom: 1px solid black; margin-bottom: 10px; padding-bottom: 10px;'>" + data.text.text + "</div>").prependTo($("#tweets")).hide().slideDown();
- 			}
 
-			numTweets++;
+		var clk = window.setInterval(function() {
+			if (recentTweet !== bufferedTweet) {
+				recentTweet = bufferedTweet;
+				$('#count').html(numTweets);
+	 			if (numTweets == 0) {
+	 				$('#wait-msg').fadeOut();
+	 			}
+	 			else {
+	 				$("<div class=tweet style='border-bottom: 1px solid black; margin-bottom: 10px; padding-bottom: 10px;'>" + bufferedTweet.text.text + "</div>").prependTo($("#tweets")).hide().slideDown(500);
+	 			}
+	 			if (numTweets >= 100) {
+	 				$('#tweets').children().last().remove();
+	 			}
+
+				numTweets++;
+			}
+		}, 500);
+
+ 		socket.on("update", function(data) {
+ 			bufferedTweet = data;
 		});
 	</script>
 
-<h1 id='title'>Query: <%- title %></h1>
-<b id='count'></b>
-<div id='tweets'></div>
+<h1 id='title'>Query: <%- title %> (<span id='count'></span>)</h1>
+<div id='tweets-container'>
+	<div id='tweets'></div>
+</div>	
 <div id='wait-msg'>Waiting for Tweets...</div>

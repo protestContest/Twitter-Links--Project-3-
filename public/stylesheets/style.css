@@ -6,3 +6,22 @@ body {
 a {
   color: #00B7FF;
 }
+
+#tweets {
+	height: 400px;
+	overflow-y: scroll;
+	border-radius: 10px;
+	background-color: #444;
+	color: #eee;
+	box-shadow: inset 0px 0px 10px black;
+}
+
+.tweet {
+	padding: 10px;
+}
+
+#tweets-container {
+	border-radius: 10px;
+	padding: 20px;
+	background-color: #555;
+}
