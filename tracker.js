@@ -37,7 +37,7 @@ exports.track = function (query) {
 			stream.on('data', function(tweet) {
 				if (tweet.user.lang=='en') {
 					var sentiment = 0;
-					tweet.text.split(' ').forEach(function(word) {
+					tweet.text.toLowerCase().split(' ').forEach(function(word) {
 						if (word.trim() != query) {
 							if (afinn.hasOwnProperty(word.trim())) {
 								sentiment += afinn[word];

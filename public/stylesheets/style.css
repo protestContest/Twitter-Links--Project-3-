@@ -33,8 +33,8 @@ a {
 	background-color: #555;
 }
 
-.wait-msg {
-	margin: 20px;
+#wait-msg {
+	padding: 20px;
 }
 
 #intro {
@@ -59,4 +59,8 @@ footer {
 	font-size: 10px;
 	position: fixed;
 	bottom: 0px;
+}
+
+#back {
+	float: left;
 }
