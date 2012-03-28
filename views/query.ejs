@@ -2,55 +2,73 @@
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script>
+		var paused = false;
 		var curTweet, bufferedTweets = [];
 		var socket = io.connect("localhost");
 		var numTweets = 0, totalSentiment = 0;
 
-		var clk = window.setInterval(function() {
-			if (bufferedTweets.length > 0) {
-				curTweet = bufferedTweets.shift();
-
-				$('#count').html(numTweets);
-	 			if (numTweets == 0) {
-	 				$('#wait-msg').fadeOut();
-	 			}
-	 			else {
-	 				totalSentiment += curTweet.text.sentiment;
-	 				$('#sentiment-total').html(totalSentiment);
-
-	 				var hue = ((curTweet.text.sentiment + 10) * 120) / 20;
-	 				$("<div class=tweet style='border-left-color: hsl(" + hue + ",70%,50%);'>" + curTweet.text.text + "</div>").prependTo($("#tweets")).hide().slideDown(500);
-	 			}
-	 			if (numTweets >= 100) {
-	 				$('#tweets').children().last().remove();
-	 			}
-
-	 			if (numTweets >= 5) {
-		 			if (totalSentiment > 0.5*numTweets) {
-		 				$('#sentiment').html('Twitter likes <%- title %>.');
-		 			}
-		 			else if (-totalSentiment > 0.5*numTweets) {
-		 				$('#sentiment').html('Twitter does not like <%- title %>.');
-		 			}
-		 			else {
-		 				$('#sentiment').html('Twitter is divided about <%- title %>.');
-		 			}
-		 		}
-
-				numTweets++;
-			}
-		}, 800);
 
  		socket.on("update", function(data) {
  			if (bufferedTweets.length < 20) {
  				bufferedTweets.push(data);
  			}
 		});
+
+		$(document).ready(function() {
+
+			var clk = window.setInterval(function() {
+				if (!paused && bufferedTweets.length > 0) {
+					curTweet = bufferedTweets.shift();
+
+					$('#count').html(numTweets);
+		 			if (numTweets == 0) {
+		 				$('#wait-msg').fadeOut();
+		 			}
+		 			else {
+		 				totalSentiment += curTweet.text.sentiment;
+		 				$('#sentiment-total').html(totalSentiment);
+
+		 				var hue = ((curTweet.text.sentiment + 10) * 120) / 20;
+		 				$("<div class=tweet style='border-left-color: hsl(" + hue + ",70%,50%);'>" + curTweet.text.text + "</div>").prependTo($("#tweets")).hide().slideDown(500);
+		 			}
+		 			if (numTweets >= 100) {
+		 				$('#tweets').children().last().remove();
+		 			}
+
+		 			if (numTweets >= 3) {
+			 			if (totalSentiment > 0.5*numTweets) {
+			 				$('#sentiment').html('Twitter likes <%- title %>.');
+			 			}
+			 			else if (-totalSentiment > 0.5*numTweets) {
+			 				$('#sentiment').html('Twitter does not like <%- title %>.');
+			 			}
+			 			else {
+			 				$('#sentiment').html('Twitter is divided about <%- title %>.');
+			 			}
+			 		}
+
+					numTweets++;
+				}
+			}, 800);
+
+			$('#playpause').click(function() {
+				paused = !paused;
+				if (paused)
+					$('#playpause').html('Resume');
+				else
+					$('#playpause').html('Pause');
+			});
+
+		});//document ready
 	</script>
 
-<a href='/' id='back'>&larr; Back</a>
 <h1 id='title'>Query: <%- title %></h1>
 <p id='sentiment'>Analyzing Twitter's feelings...</p>
+<ul>
+	<li><a href='/' class='button'>Back</a>
+	<li><a href='#' class='button' id='playpause'>Pause</a>
+</ul>
+
 <div id='tweets-container'>
 	<div id='tweets'>
 		<div id='wait-msg'>Waiting for Tweets...</div>

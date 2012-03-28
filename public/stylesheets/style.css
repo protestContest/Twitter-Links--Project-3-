@@ -31,6 +31,7 @@ a {
 	border-radius: 10px;
 	padding: 20px;
 	background-color: #555;
+	box-shadow: 0px 0px 20px #fff;
 }
 
 #wait-msg {
@@ -61,6 +62,39 @@ footer {
 	bottom: 0px;
 }
 
-#back {
-	float: left;
+.button {
+	padding: 5px;
+	background: #555;
+	border-radius: 5px;
+	box-shadow: 0px 0px 20px #fff;
+	margin-right: 5px;
+}
+
+a.button:link {
+	color: #eee;
+	text-decoration: none;
+	outline: none;
+}
+a.button:visited {
+	color: #eee;
+	text-decoration: none;
+	outline: none;
+}
+a.button:hover {
+	color: #eee;
+	text-decoration: none;
+	outline: none;
+}
+a.button:active {
+	color: #eee;
+	text-decoration: none;
+	outline: none;
+}
+
+ul {
+	padding-left: 0px;
+}
+li {
+	display: inline;
+	list-style-type: none;
 }
