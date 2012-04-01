@@ -21,10 +21,11 @@ a {
 .tweet {
 	padding: 10px;
 	padding-top: 20px;
-	border-bottom: 1px solid black;
-	/*margin-bottom: 10px;*/
+	border-top: 1px solid black;
 	border-left: 5px solid;
-	/*border-left-color: hsl(127, 50%, 50%);*/
+}
+.tweetbox:last-child {
+	border-bottom: 1px solid black;
 }
 
 #tweets-container {
@@ -41,6 +42,7 @@ a {
 #intro {
 	width: 420px;
 	text-align: justify;
+	line-height: 18px;
 }
 
 #search-container {
@@ -53,7 +55,8 @@ a {
 
 #title {
 	font-weight: normal;
-	margin-top: 35px;
+	margin-top: 5px;
+	font-size: 28px;
 }
 
 footer {
@@ -66,8 +69,9 @@ footer {
 	padding: 5px;
 	background: #555;
 	border-radius: 5px;
-	box-shadow: 0px 0px 20px #fff;
 	margin-right: 5px;
+	color: #eee;
+	height: 17px;
 }
 
 a.button:link {
@@ -82,6 +86,7 @@ a.button:visited {
 }
 a.button:hover {
 	color: #eee;
+	background-color: #666;
 	text-decoration: none;
 	outline: none;
 }
@@ -96,5 +101,53 @@ ul {
 }
 li {
 	display: inline;
+	float: left;
 	list-style-type: none;
+}
+li:last-child {
+	float: none;
+}
+
+li a {
+	display: inline-block;
+	width: 52px;
+	text-align: center;
+}
+
+a.tweet-link {
+	display: block;
+	height: 100%;
+}
+
+a.tweet-link:link {
+	color: #eee;
+	text-decoration: none;
+	outline: none;
+}
+a.tweet-link:visited {
+	color: #eee;
+	text-decoration: none;
+	outline: none;
+}
+a.tweet-link:hover {
+	color: #eee;
+	background-color: #777;
+	text-decoration: none;
+	outline: none;
+}
+a.tweet-link:active {
+	color: #eee;
+	text-decoration: none;
+	outline: none;
+}
+
+select.button {
+	/*padding: 5px;*/
+	height: 27px;
+	font-size: 14px;
+	border: none;
+	outline: none;
+}
+.button option {
+	font-size: 14px;
 }

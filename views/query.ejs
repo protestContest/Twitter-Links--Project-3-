@@ -3,14 +3,18 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script>
 		var paused = false;
+		var filter = false;		// whether to filter at all
+		var goodFilter = false;	// if there is a filter, if it is for good or bad tweets
 		var curTweet, bufferedTweets = [];
 		var socket = io.connect("localhost");
 		var numTweets = 0, totalSentiment = 0;
 
 
  		socket.on("update", function(data) {
- 			if (bufferedTweets.length < 20) {
- 				bufferedTweets.push(data);
+ 			if (data.text.entities.urls.length > 0 
+ 					&& bufferedTweets.length < 20) {
+ 				if (bufferedTweets[bufferedTweets.length-1] !== data)
+ 					bufferedTweets.push(data);
  			}
 		});
 
@@ -18,7 +22,17 @@
 
 			var clk = window.setInterval(function() {
 				if (!paused && bufferedTweets.length > 0) {
+
 					curTweet = bufferedTweets.shift();
+
+					if (filter) {
+						if (goodFilter && curTweet.text.sentiment <= 0)
+							return;
+						if (!goodFilter && curTweet.text.sentiment >= 0)
+							return;
+					}
+
+					console.log(curTweet);
 
 					$('#count').html(numTweets);
 		 			if (numTweets == 0) {
@@ -29,7 +43,11 @@
 		 				$('#sentiment-total').html(totalSentiment);
 
 		 				var hue = ((curTweet.text.sentiment + 10) * 120) / 20;
-		 				$("<div class=tweet style='border-left-color: hsl(" + hue + ",70%,50%);'>" + curTweet.text.text + "</div>").prependTo($("#tweets")).hide().slideDown(500);
+		 				$("<div class='tweetbox'><a target='_blank' class='tweet-link' href='" + curTweet.text.entities.urls[0].url + "'>"
+		 					+ "<div class=tweet style='border-left-color: hsl(" + hue + ",70%,50%);'>"
+		 					+ "(" + curTweet.text.sentiment + ") "
+		 					+ curTweet.text.text 
+		 					+ "</div></a></div>").prependTo($("#tweets")).hide().slideDown(500);
 		 			}
 		 			if (numTweets >= 100) {
 		 				$('#tweets').children().last().remove();
@@ -67,6 +85,11 @@
 <ul>
 	<li><a href='/' class='button'>Back</a>
 	<li><a href='#' class='button' id='playpause'>Pause</a>
+	<li><select class='button'>
+			<option value='all'>All</option>
+			<option value='good'>Good Tweets Only</option>
+			<option value='bad'>Bad Tweets Only</option>
+		</select>
 </ul>
 
 <div id='tweets-container'>
