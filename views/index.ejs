@@ -1,6 +1,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type='text/javascript'>
 		$(document).ready(function() {
+			$()
+
 			$('form').submit(function() {
 				console.log('hey.');
 				window.location.href += 'query/' + $('input').val();
@@ -14,7 +16,7 @@
 <div id='search-container'>
 	Search Twitter:
 	<form id='search'>
-		<input type='text' size='23' />
+		<input type='text' size='23' id='input-box' />
 		<input type='submit' value='Search' />
 	</form>
 </div>

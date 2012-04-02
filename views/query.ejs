@@ -32,7 +32,7 @@
 							return;
 					}
 
-					console.log(curTweet);
+					// console.log(curTweet);
 
 					$('#count').html(numTweets);
 		 			if (numTweets == 0) {
@@ -77,6 +77,33 @@
 					$('#playpause').html('Pause');
 			});
 
+			// $('#all').click(function() {
+			// 	filter = false;
+			// });
+			// $('#good').click(function() {
+			// 	console.log('good filter ACTIVATED!!!!');
+			// 	filter = true;
+			// 	goodFilter = true;
+			// });
+			// $('#bad').click(function() {
+			// 	filter = true;
+			// 	goodFilter = false;
+			// });
+
+			$('#filter').change(function() {
+				var value = $(this).val();
+				if (value === 'all')
+					filter = false;
+				else if (value === 'good') {
+					filter = true;
+					goodFilter = true;
+				}
+				else if (value === 'bad') {
+					filter = true;
+					goodFilter = false;
+				}
+			});
+
 		});//document ready
 	</script>
 
@@ -85,7 +112,7 @@
 <ul>
 	<li><a href='/' class='button'>Back</a>
 	<li><a href='#' class='button' id='playpause'>Pause</a>
-	<li><select class='button'>
+	<li><select class='button' id='filter'>
 			<option value='all'>All</option>
 			<option value='good'>Good Tweets Only</option>
 			<option value='bad'>Bad Tweets Only</option>
